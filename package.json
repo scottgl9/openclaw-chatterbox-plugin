@@ -1,5 +1,5 @@
 {
-  "name": "@openclaw/chatterbox-speech",
+  "name": "chatterbox",
   "version": "0.1.0",
   "private": true,
   "description": "OpenClaw Chatterbox TTS speech provider plugin",

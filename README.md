@@ -20,21 +20,34 @@ A native local text-to-speech plugin for [OpenClaw](https://github.com/nicepkg/o
 
 ## Installation
 
-### 1. Install the Python server dependencies
+### 1. Install Python server dependencies (recommended: venv)
 
 ```bash
+cd ~/sandbox/personal/openclaw-chatterbox-plugin
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r server/requirements.txt
 ```
 
-Or install manually:
+### 2. Install via OpenClaw plugin installer (required)
+
+Do **not** rely on manual copy-only installs for production use. Use installer so OpenClaw records plugin provenance in `plugins.installs`.
 
 ```bash
-pip install chatterbox-tts fastapi 'uvicorn[standard]'
+openclaw plugins disable chatterbox || true
+openclaw plugins install ~/sandbox/personal/openclaw-chatterbox-plugin
+openclaw plugins enable chatterbox
+openclaw gateway restart
 ```
 
-### 2. Install the plugin in OpenClaw
+### 3. Verify install
 
-Copy or symlink this directory into your OpenClaw extensions folder, or add it as a dependency in your OpenClaw configuration.
+```bash
+openclaw plugins list | grep -i chatterbox
+openclaw doctor
+```
+
+You should see `chatterbox` in loaded plugins and no `plugin not found: chatterbox` config errors.
 
 ## Configuration
 
@@ -147,6 +160,25 @@ curl -X POST http://localhost:8099/synthesize \
   -H 'Content-Type: application/json' \
   -d '{"text": "Hello world"}'
 ```
+
+## Troubleshooting
+
+### `plugin not found: chatterbox` or config invalid on startup
+
+This usually means `plugins.allow` / `plugins.entries` references exist but no matching `plugins.installs` record.
+
+Fix:
+
+```bash
+openclaw doctor --fix
+openclaw plugins install ~/sandbox/personal/openclaw-chatterbox-plugin
+openclaw plugins enable chatterbox
+openclaw gateway restart
+```
+
+### "loaded without install/load-path provenance" warning
+
+Reinstall with `openclaw plugins install ...` (above). This writes proper install metadata.
 
 ## Running Tests
 
