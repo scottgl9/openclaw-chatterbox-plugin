@@ -1,0 +1,46 @@
+{
+  "id": "chatterbox",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "baseUrl": {
+        "type": "string",
+        "description": "URL of an externally-managed Chatterbox server. When set, the plugin skips spawning its own Python process."
+      },
+      "model": {
+        "type": "string",
+        "enum": ["turbo", "standard", "multilingual"],
+        "default": "turbo",
+        "description": "Chatterbox model variant."
+      },
+      "device": {
+        "type": "string",
+        "enum": ["auto", "cuda", "mps", "cpu"],
+        "default": "auto",
+        "description": "PyTorch device for model inference."
+      },
+      "port": {
+        "type": "number",
+        "default": 8099,
+        "description": "Port for the managed Python server."
+      },
+      "referenceAudio": {
+        "type": "string",
+        "description": "Path to a WAV file used as the voice-cloning reference."
+      },
+      "temperature": {
+        "type": "number",
+        "description": "Sampling temperature."
+      },
+      "exaggeration": {
+        "type": "number",
+        "description": "Exaggeration parameter for expressiveness."
+      },
+      "cfgWeight": {
+        "type": "number",
+        "description": "Classifier-free guidance weight."
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@openclaw/chatterbox-speech",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenClaw Chatterbox TTS speech provider plugin",
+  "type": "module",
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}
