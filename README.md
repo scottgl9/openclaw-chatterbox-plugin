@@ -2,6 +2,8 @@
 
 A native local text-to-speech plugin for [OpenClaw](https://github.com/nicepkg/openclaw) using [Resemble AI's Chatterbox](https://github.com/resemble-ai/chatterbox) — an open-source (MIT) TTS system with zero-shot voice cloning support.
 
+> Current implementation targets the modern OpenClaw plugin API by exposing a `chatterbox_tts` tool and `/chatterbox-health` command.
+
 ## Features
 
 - **Zero-shot voice cloning** — provide a reference WAV file to clone any voice
@@ -103,11 +105,19 @@ The `openclaw.plugin.json` file defines the configuration schema for the plugin.
                         └──────────────────────────┘
 ```
 
-- **Plugin entry** (`index.ts`) registers the Chatterbox speech provider with OpenClaw
-- **Speech provider** (`chatterbox-provider.ts`) handles synthesis requests, config resolution, and audio format conversion
+- **Plugin entry** (`index.ts`) registers a `chatterbox_tts` tool and `/chatterbox-health` command for current OpenClaw plugin APIs
+- **Speech provider logic** (`chatterbox-provider.ts`) is reused for config resolution and server wiring
 - **Server manager** (`server-manager.ts`) lazily starts and manages the Python FastAPI server process
 - **Audio convert** (`audio-convert.ts`) converts WAV output to mp3/opus via ffmpeg
 - **Python server** (`chatterbox_server.py`) loads the Chatterbox model and exposes HTTP endpoints
+
+## Usage
+
+After enabling the plugin:
+
+- Run `/chatterbox-health` to verify gateway -> plugin -> Chatterbox server connectivity.
+- Use tool `chatterbox_tts` with `{ "text": "..." }` to synthesize speech.
+- The tool returns a `MEDIA:` path to a generated WAV file.
 
 ## Voices
 
